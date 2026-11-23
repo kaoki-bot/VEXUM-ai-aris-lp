@@ -92,6 +92,7 @@
     try {
       const r = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ source: 'aris-lp', ...v, body }) });
       const j = await r.json().catch(() => ({}));
+      if (j.error === 'not_configured') { location.href = `mailto:${TO}?subject=${encodeURIComponent(`【ARIS LP】${v.type}：${v.company}`)}&body=${encodeURIComponent(body)}`; send.disabled = false; send.innerHTML = label; return; }
       if (!r.ok || j.ok !== true) throw new Error();
       form.querySelector('.cform-in').hidden = true;
       form.querySelector('.cdone').hidden = false;

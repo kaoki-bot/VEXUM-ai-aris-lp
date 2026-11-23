@@ -60,6 +60,7 @@ module.exports = async (req, res) => {
     } catch (e) { console.error('slack', e.message); results.slack = false; }
   }
 
+  if (!Object.keys(results).length) return res.status(503).json({ ok: false, error: 'not_configured' });
   const ok = Object.values(results).some(Boolean);
   if (!ok) console.error('inquiry not delivered', { configured: Object.keys(results) });
   return res.status(ok ? 200 : 500).json({ ok, results });
