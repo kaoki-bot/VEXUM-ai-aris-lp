@@ -516,3 +516,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .final .cform .cstatus{color:var(--red)}
 .final .cform .cdone p{color:#4d6378;text-align:center}
 .hdr.solid{background:rgba(0,0,0,.72);backdrop-filter:blur(10px)}
+
+/* 対面で常駐 */
+.onsite{background:var(--blue);color:#fff;padding:clamp(56px,7vw,90px) 0;overflow:hidden;position:relative}
+.onsite::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px)}
+.onsite-in{position:relative;display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,70px);align-items:center}
+.onsite-badge{width:clamp(150px,17vw,210px);aspect-ratio:1;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-content:center;text-align:center;box-shadow:0 12px 0 #002d5e,0 30px 50px -20px rgba(0,0,0,.6);transform:rotate(-8deg)}
+.onsite-badge span{font-family:var(--en);font-weight:900;font-size:clamp(13px,1.3vw,16px);letter-spacing:.08em}
+.onsite-badge b{font-weight:900;font-size:clamp(48px,5.4vw,70px);line-height:1.05}
+.onsite-tt{font-weight:900;font-size:clamp(30px,4.4vw,58px);line-height:1.25;letter-spacing:-.01em}
+.onsite-tx{margin-top:16px;max-width:36em;color:#d9e8f7;font-size:clamp(15px,1.3vw,17px);line-height:1.9}
+@media (max-width:700px){.onsite-in{grid-template-columns:1fr}.onsite-badge{width:130px}}
