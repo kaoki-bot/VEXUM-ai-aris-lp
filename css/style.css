@@ -60,7 +60,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .dead{position:relative;height:340vh;background:var(--ink);color:#fff}
 .dead .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;perspective:900px;perspective-origin:50% 45%}
 .cloud{position:absolute;inset:0;transform-style:preserve-3d}
-.cloud span{position:absolute;left:50%;top:50%;white-space:nowrap;font-weight:700;color:#cfcfcf;will-change:transform,opacity;letter-spacing:.02em}
+.cloud span{position:absolute;left:50%;top:50%;white-space:nowrap;font-weight:700;color:#fff;will-change:transform,opacity;letter-spacing:.02em}
 .cloud span.hot{color:#fff;font-weight:900}
 .cloud span.redw{color:var(--red)}
 .qmark{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-family:var(--en);font-weight:900;font-size:min(56vh,70vw);line-height:1;color:var(--red);opacity:1;will-change:transform,opacity;text-shadow:0 30px 80px rgba(211,10,10,.35)}
@@ -432,8 +432,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .dead,.burn{height:auto}
-  .dead .stage,.burn .stage{position:relative}
   .rv{opacity:1;transform:none}
   .vt .ln{opacity:1;transform:none}
   .vt .on mark::before,.vt mark::before{transform:scaleY(1)}
@@ -461,17 +459,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .fullpower{overflow-x:clip}
 @media (max-width:760px){.manifesto .vt{font-size:clamp(13px,1.9vh,17px)}.manifesto{overflow-x:clip}.hero-kicker{right:16px;bottom:64px}}
 @media (prefers-reduced-motion:reduce){
-  .manifesto{height:auto}
-  .title{opacity:1!important}.title *{opacity:1!important;transform:none!important}
-  .cloud,.qmark,.dots,.scroll-hint{display:none}
-  .dead .stage{height:auto;min-height:100vh;display:grid}.title{position:relative}
-  .hero-kicker{display:none}
-  .burn .fire-copy{position:relative;top:auto;padding-top:100px}
-  .burn .fire-copy>*{opacity:1;transform:none}
-  .burn .black,.burn canvas,.burn .heat{display:none}
-  .burn .stage{height:auto}
-  .burn .team{position:relative;top:auto;transform:translateX(-50%);margin-top:30px}
-  .manifesto .pin{position:relative;height:auto;min-height:100vh}
   .steps li{opacity:1;transform:none}
 }
 

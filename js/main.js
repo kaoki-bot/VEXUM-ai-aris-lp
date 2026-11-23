@@ -23,7 +23,7 @@
       const r = rnd();
       if (r > .93) s.className = 'redw'; else if (r > .8) s.className = 'hot';
       const spread = window.innerWidth < 760 ? 1.15 : 1.35;
-      const small = window.innerWidth < 760; const w = { el: s, x: (rnd() - .5) * window.innerWidth * spread, y: (rnd() - .5) * vh() * 1.25, z: 150 - rnd() * 1450, size: small ? 9 + rnd() * 12 : 12 + rnd() * 22 };
+      const small = window.innerWidth < 760; const w = { el: s, x: (rnd() - .5) * window.innerWidth * spread, y: (rnd() - .5) * vh() * 1.25, z: 150 - rnd() * 1450, size: small ? 10 + rnd() * 12 : 13 + rnd() * 22, a: .55 + rnd() * .45 };
       s.style.fontSize = w.size + 'px';
       cloud.appendChild(s); words.push(w);
     }
@@ -42,7 +42,7 @@
       let z = w.z + travel;
       const o = z > 500 ? clamp(1 - (z - 500) / 300) : clamp((z + 2600) / 1400);
       const fadeOut = p > .55 ? clamp(1 - (p - .55) / .12) : 1;
-      w.el.style.opacity = (o * fadeOut * (z > 800 ? 0 : 1)).toFixed(3);
+      w.el.style.opacity = (w.a * o * fadeOut * (z > 800 ? 0 : 1)).toFixed(3);
       w.el.style.transform = `translate3d(${w.x}px,${w.y}px,${Math.min(z, 820)}px) translate(-50%,-50%)`;
     }
     const q = 1, qOut = clamp((p - .5) / .1);
@@ -76,7 +76,7 @@
     if (sec.classList.contains('manifesto')) p = prog(sec) * 1.15;
     else { const r = vt.getBoundingClientRect(); p = clamp((vh() * .9 - r.top) / (r.height + vh() * .35)) * 1.1; }
     const n = Math.floor(p * lns.length * mult);
-    lns.forEach((l, i) => l.classList.toggle('on', RM || i < n));
+    lns.forEach((l, i) => l.classList.toggle('on', i < n));
   }
 
   /* ---------------- 3. 燃える遷移 ---------------- */
@@ -289,6 +289,5 @@
     tickEmbers();
     requestAnimationFrame(frame);
   }
-  if (RM) { drawDead(); drawBurn(); drawChrome(); $$('.vt .ln').forEach(l => l.classList.add('on')); addEventListener('scroll', drawChrome, { passive: true }); }
-  else requestAnimationFrame(frame);
+  requestAnimationFrame(frame);
 })();
