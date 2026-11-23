@@ -15,15 +15,15 @@
   const words = [];
   if (cloud) {
     const list = D.worries;
-    const N = Math.min(list.length * 2, window.innerWidth < 760 ? 70 : 120);
+    const N = Math.min(list.length * 3, window.innerWidth < 760 ? 80 : 140);
     let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     for (let i = 0; i < N; i++) {
       const s = document.createElement('span');
       s.textContent = list[i % list.length];
       const r = rnd();
       if (r > .93) s.className = 'redw'; else if (r > .8) s.className = 'hot';
-      const spread = window.innerWidth < 760 ? 1.1 : 1.6;
-      const small = window.innerWidth < 760; const w = { el: s, x: (rnd() - .5) * window.innerWidth * spread, y: (rnd() - .5) * vh() * 1.5, z: -rnd() * 2600, size: small ? 9 + rnd() * 12 : 12 + rnd() * 22 };
+      const spread = window.innerWidth < 760 ? 1.15 : 1.35;
+      const small = window.innerWidth < 760; const w = { el: s, x: (rnd() - .5) * window.innerWidth * spread, y: (rnd() - .5) * vh() * 1.25, z: 150 - rnd() * 1450, size: small ? 9 + rnd() * 12 : 12 + rnd() * 22 };
       s.style.fontSize = w.size + 'px';
       cloud.appendChild(s); words.push(w);
     }
