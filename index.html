@@ -37,7 +37,17 @@
     <a class="key sm" href="#contact">相談する</a>
   </nav>
 </header>
-<div class="temp" aria-hidden="true"><i></i></div>
+<nav class="dock" aria-label="章を移動">
+  <span class="dock-line" aria-hidden="true"><i></i></span>
+  <a href="#dead" data-sec="dead"><b>入口</b></a>
+  <a href="#what" data-sec="what"><b>ARISとは</b></a>
+  <a href="#cando" data-sec="cando"><b>できること</b></a>
+  <a href="#cases" data-sec="cases"><b>活用例</b></a>
+  <a href="#worry" data-sec="worry"><b>悩みから探す</b></a>
+  <a href="#plans" data-sec="plans"><b>料金</b></a>
+  <a href="#contact" data-sec="final" class="goal"><b>申し込む</b></a>
+</nav>
+<a class="fab key" href="#contact" id="fab" aria-label="無料AI診断を申し込む"><span class="dot" aria-hidden="true"></span><span class="fab-t">無料AI診断を申し込む</span></a>
 
 <main id="top">
 
@@ -169,6 +179,17 @@
   </div>
 </section>
 
+<!-- WORRY PICKER -->
+<section class="sec worry" id="worry">
+  <div class="wrap">
+    <h2 class="h-en rv">YOUR ISSUE <small>悩みから探す</small></h2>
+    <p class="h-jp rv">いま、いちばん困っていることは？</p>
+    <p class="lede rv">一つ押すと、ARISが最初に手をつける業務の例が出ます。そのまま無料AI診断に申し込めます。</p>
+    <div class="worry-keys rv" id="worry-keys" role="group" aria-label="いちばん困っていること"></div>
+    <div class="worry-out" id="worry-out" aria-live="polite" hidden></div>
+  </div>
+</section>
+
 <!-- 20 DOMAINS -->
 <section class="sec navy" id="domains" style="background:var(--night)">
   <div class="wrap">
@@ -194,7 +215,7 @@
   <div class="wrap">
     <h2 class="h-en rv">HOW IT WORKS <small>進め方と次のフェーズ</small></h2>
     <p class="h-jp rv">まずはAI診断から。<br>一つの業務で成果を出し、会社全体へ広げます。</p>
-    <div class="stairs rv">
+    <div class="stairs rv" id="stairs"><div class="climber" id="climber" aria-hidden="true"><span>いまここ</span></div>
       <div class="stair"><span class="start">まずはここから</span><div class="ph">PHASE 1</div><h3>AI診断・見える化</h3><p>組織図とヒアリングから、誰が・何を・誰へ渡しているかを一枚の図に。時間を食っている業務を見つけます。</p><div class="flow"><span>組織図</span><span>ヒアリング</span><span>一枚の図</span></div></div>
       <div class="stair"><div class="ph">PHASE 2</div><h3>作って、試す</h3><p>業務を作業単位に分け、3,000超のエージェントから選んで、現場のルールに合わせて作り変えます。</p><div class="flow"><span>選ぶ</span><span>作り変える</span><span>試す</span></div></div>
       <div class="stair"><div class="ph">PHASE 3</div><h3>使えるまで、伴走</h3><p>現場で使い方を共有し、定着するまで改善を続けます。人は確認と判断だけに。</p><div class="flow"><span>共有</span><span>改善</span><span>定着</span></div></div>

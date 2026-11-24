@@ -121,7 +121,7 @@
   }
 
   /* ---------------- header / 温度計 ---------------- */
-  const hdr = $('.hdr'), temp = $('.temp i');
+  const hdr = $('.hdr');
   function drawChrome() {
     const blueTop = $('#blue').getBoundingClientRect().top;
     const burnP = +(burn && burn.dataset.p) || 0;
@@ -130,8 +130,7 @@
     hdr.classList.toggle('light', light);
     hdr.classList.toggle('solid', !light && scrollY > vh() * 2.6);
     const total = document.documentElement.scrollHeight - vh();
-    temp.parentElement.style.setProperty('--p', (scrollY / total * 100) + '%');
-    temp.style.height = (scrollY / total * 100) + '%';
+    drawDock(total, light); drawFab(); drawClimber();
   }
 
   /* ---------------- 4. 3Dカード傾き ---------------- */
@@ -275,6 +274,88 @@
   /* ---------------- FAQ ---------------- */
   const faq = $('#faq-list');
   if (faq) faq.innerHTML = D.faq.map(f => `<details><summary><span class="q">Q</span><span>${esc(f.q)}</span><span class="pm" aria-hidden="true"></span></summary><div class="a">${esc(f.a)}</div></details>`).join('');
+
+
+  /* ---------------- 仕掛け1: 章レール ---------------- */
+  const dock = $('.dock'), dockLinks = $$('.dock a'), dockFill = $('.dock-line i');
+  const secs = dockLinks.map(a => document.getElementById(a.dataset.sec));
+  let cur = '';
+  function currentSec() {
+    let id = secs[0].id;
+    for (const el of secs) if (el && el.getBoundingClientRect().top < vh() * .45) id = el.id;
+    return id;
+  }
+  function drawDock(total, light) {
+    const id = currentSec(); cur = id;
+    let passed = true;
+    dockLinks.forEach(a => { const on = a.dataset.sec === id; if (on) passed = false; a.classList.toggle('on', on); a.classList.toggle('done', passed && !on); });
+    dockFill.style.setProperty('--p', (scrollY / total * 100) + '%');
+    dock.classList.toggle('show', scrollY > vh() * .6);
+    dock.classList.toggle('dark', !light);
+  }
+
+  /* ---------------- 仕掛け2: 追いかける申込ボタン ---------------- */
+  const fab = $('#fab'), fabT = $('.fab-t', fab);
+  const FAB = { what: '常駐の相談をする', cando: 'この作業を任せたい', cases: 'うちの業務でも試したい', numbers: '無料AI診断を申し込む', worry: 'この悩みを相談する', domains: 'うちの組織図で探す', how: 'まずはAI診断から', plans: '月15万円から。見積もる', start: '無料AI診断を申し込む', company: '無料AI診断を申し込む' };
+  const fabSecs = Object.keys(FAB).map(k => document.getElementById(k)).filter(Boolean);
+  let fabLabel = '';
+  function drawFab() {
+    const form = $('#contact').getBoundingClientRect();
+    const wr = $('#worry').getBoundingClientRect();
+    const inWorry = !$('#worry-out').hidden && wr.top < vh() * .6 && wr.bottom > vh() * .4;
+    const show = $('#blue').getBoundingClientRect().top < vh() * .5 && form.top > vh() * .85 && !inWorry;
+    fab.classList.toggle('show', show);
+    let id = 'what';
+    for (const el of fabSecs) if (el.getBoundingClientRect().top < vh() * .5) id = el.id;
+    const label = FAB[id] || '無料AI診断を申し込む';
+    if (label !== fabLabel) {
+      fabLabel = label;
+      fab.classList.add('swap');
+      setTimeout(() => { fabT.textContent = label; fab.setAttribute('aria-label', label); fab.classList.remove('swap'); }, RM ? 0 : 180);
+    }
+  }
+
+  /* ---------------- 仕掛け3: 階段をのぼる「いまここ」 ---------------- */
+  const stairsEl = $('#stairs'), climber = $('#climber');
+  function drawClimber() {
+    if (!stairsEl || innerWidth <= 860) return;
+    const box = stairsEl.getBoundingClientRect();
+    if (box.bottom < 0 || box.top > vh()) return;
+    const st = $$('.stair', stairsEl).map(el => { const r = el.getBoundingClientRect(); return { x: r.left - box.left + r.width / 2, y: r.top - box.top }; });
+    const t = clamp((vh() * .85 - box.top) / (box.height + vh() * .25)) * (st.length - 1);
+    const i = Math.min(Math.floor(t), st.length - 2), f = ease(t - i);
+    const a = st[i], b = st[i + 1];
+    const x = a.x + (b.x - a.x) * f, y = a.y + (b.y - a.y) * f - Math.sin(f * Math.PI) * 30;
+    climber.style.setProperty('--cx', x + 'px'); climber.style.setProperty('--cy', (y - 8) + 'px');
+  }
+
+  /* ---------------- 仕掛け4: 悩みから探す → フォームへ ---------------- */
+  const WORRY = [
+    { k: '売上', s: '受注・来店を増やしたい', h: '商談のあとを速く、相手に合わせる。', do: ['商談メモから、次の連絡と見積のたたき台を作る', '問い合わせへの回答と引継ぎを準備する', '数字を毎月見て、効いた施策を広げる'], more: '#plans', moreT: '「攻め」の進め方を見る' },
+    { k: '人手不足・採用', s: '人が足りない、採れない', h: '手作業を人から外し、採用の文面は1人ずつ。', do: ['候補者の経歴に合わせたスカウト文を作る', '入力・照合をエージェントに任せ、人は確認だけに', '日程調整や連絡を自動でつなぐ'], more: '#cases', moreT: '採用スカウトの活用例を見る' },
+    { k: '属人化', s: 'あの人しか分からない', h: '人の頭の中を、手順とエージェントに移す。', do: ['業務のつながりを一枚の図にする', 'システムの変更からマニュアルの直し案を作る', '接客の録音から、スタッフ別の育成レポートを作る'], more: '#cases', moreT: 'マニュアル更新の活用例を見る' },
+    { k: '残業・固定費', s: '手作業に時間を取られている', h: '入力・照合・下書きを、人から外す。', do: ['届いたExcelを読み取り、システムへ登録・照合する', '録音から記録の下書きを作り、人は直すだけに', 'データを渡すだけで、報告スライドができる'], more: '#cases', moreT: '施設登録の活用例を見る' },
+    { k: '何から始めるか', s: 'AIを入れたいが手が付かない', h: 'まず組織図から、重い業務を見つける。', do: ['組織図から、誰が・何を・どこへ渡しているかを整理', '時間を食う所、待ち、打ち直しを見つける', '最初に変える業務を一つ決める'], more: '#domains', moreT: '20の業務領域から探す' },
+    { k: 'AIが定着しない', s: '入れたのに使われていない', h: '隣の席に常駐して、使えるまで伴走する。', do: ['現場で使い方を共有し、つまずく所をその場で直す', '人が確認する所と止め方を、手順として残す', '使いながらエージェントを更新し続ける'], more: '#how', moreT: '進め方を見る' },
+  ];
+  const wk = $('#worry-keys'), wo = $('#worry-out');
+  if (wk) {
+    wk.innerHTML = WORRY.map((w, i) => `<button class="wk" aria-pressed="false" data-i="${i}"><b>${esc(w.k)}</b><span>${esc(w.s)}</span></button>`).join('');
+    wk.addEventListener('click', e => {
+      const b = e.target.closest('.wk'); if (!b) return;
+      const w = WORRY[+b.dataset.i];
+      $$('.wk', wk).forEach(x => x.setAttribute('aria-pressed', x === b));
+      wo.hidden = false;
+      wo.innerHTML = `<div><h3>${esc(w.h)}</h3><ol>${w.do.map(d => `<li>${esc(d)}</li>`).join('')}</ol></div>
+        <div class="side"><p>「${esc(w.k)}」を選んだ状態で、申し込みフォームに進みます。</p><button class="key" type="button" data-go="${esc(w.k)}"><span class="dot" aria-hidden="true"></span>この悩みで無料AI診断を申し込む</button><a class="more" href="${w.more}">${esc(w.moreT)}</a></div>`;
+      $('[data-go]', wo).addEventListener('click', () => {
+        const sel = document.querySelector('#contact [name=issues]'); if (sel) sel.value = w.k;
+        const t = document.querySelector('#contact [name=type][value="無料AI診断"]'); if (t) { t.checked = true; t.dispatchEvent(new Event('change', { bubbles: true })); }
+        $('#contact').scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+        setTimeout(() => { const c = document.querySelector('#contact [name=company]'); if (c) c.focus({ preventScroll: true }); }, RM ? 0 : 900);
+      });
+    });
+  }
 
   /* ---------------- loop ---------------- */
   let last = -1;
